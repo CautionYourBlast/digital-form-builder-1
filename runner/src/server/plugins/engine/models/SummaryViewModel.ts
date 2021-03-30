@@ -154,24 +154,25 @@ export class SummaryViewModel {
         return !fee.condition || model.conditions[fee.condition].fn(state);
       });
 
-      this._payApiKey = model.def.payApiKey;
-      const flatState = flatten(state);
+      if (applicableFees.length > 0) {
+        this._payApiKey = model.def.payApiKey;
+        const flatState = flatten(state);
 
-      return {
-        details: applicableFees,
-        total: Object.values(applicableFees)
-          .map((fee) => {
-            if (fee.multiplier) {
-              const multiplyBy = flatState[fee.multiplier];
-              fee.multiplyBy = Number(multiplyBy);
-              return fee.multiplyBy * fee.amount;
-            }
-            return fee.amount;
-          })
-          .reduce((a, b) => a + b, 0),
-      };
+        return {
+          details: applicableFees,
+          total: Object.values(applicableFees)
+            .map((fee) => {
+              if (fee.multiplier) {
+                const multiplyBy = flatState[fee.multiplier];
+                fee.multiplyBy = Number(multiplyBy);
+                return fee.multiplyBy * fee.amount;
+              }
+              return fee.amount;
+            })
+            .reduce((a, b) => a + b, 0),
+        };
+      }
     }
-
     return undefined;
   }
 
