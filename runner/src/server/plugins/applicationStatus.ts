@@ -127,9 +127,9 @@ const applicationStatus = {
                     if (addReferencesToPersonalisation) {
                       Object.assign(personalisation, {
                         hasWebhookReference: !!newReference,
-                        webhookReference: newReference,
+                        webhookReference: newReference || "",
                         hasPaymentReference: !!payState?.reference,
-                        paymentReference: payState?.reference,
+                        paymentReference: payState?.reference || "",
                       });
                     }
 
