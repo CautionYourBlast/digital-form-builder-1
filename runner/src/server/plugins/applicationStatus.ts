@@ -147,6 +147,7 @@ const applicationStatus = {
                     const formData = webhookData;
                     if (userCouldntPay) {
                       delete formData.fees;
+                      formData.paySkipped = true;
                     }
                     return webhookService.postRequest(url, formData);
                   }
