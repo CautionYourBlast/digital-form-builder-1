@@ -144,7 +144,10 @@ const applicationStatus = {
                   }
                   case "webhook": {
                     const { url } = output.outputData;
-                    const formData = {... webhookData, paymentSkipped: userCouldntPay};
+                    const formData = {
+                      ...webhookData,
+                      paymentSkipped: userCouldntPay,
+                    };
                     return webhookService.postRequest(url, formData);
                   }
                   case "sheets": {
