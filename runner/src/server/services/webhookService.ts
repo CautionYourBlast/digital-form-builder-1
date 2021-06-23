@@ -27,6 +27,8 @@ export class WebhookService {
       payload: JSON.stringify(data),
     });
 
+    this.logger.debug(["WebhookData", "Data to send"], data);
+
     if (typeof payload === "object" && !Buffer.isBuffer(payload)) {
       return payload.reference;
     }
