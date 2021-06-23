@@ -95,17 +95,22 @@ const applicationStatus = {
             (output) => output.type === "webhook"
           );
           let firstWebhook;
+          let formData;
 
           try {
             if (webhookOutputs.length) {
               firstWebhook = webhookOutputs[0];
-              const firstWebhookFormData = webhookData;
-              if (userCouldntPay && firstWebhookFormData.fees) {
-                delete firstWebhookFormData.fees;
-              }
+              const { metadata } = webhookData;
+              formData = {
+                ...webhookData,
+                metadata: {
+                  ...metadata,
+                  paymentSkipped: userCouldntPay ?? false,
+                },
+              };
               newReference = await webhookService.postRequest(
                 firstWebhook.outputData.url,
-                firstWebhookFormData
+                formData
               );
               await cacheService.mergeState(request, {
                 reference: newReference,
@@ -144,14 +149,6 @@ const applicationStatus = {
                   }
                   case "webhook": {
                     const { url } = output.outputData;
-                    const { metadata } = webhookData;
-                    const formData = {
-                      ...webhookData,
-                      metadata: {
-                        ...metadata,
-                        paymentSkipped: userCouldntPay ?? false,
-                      },
-                    };
                     return webhookService.postRequest(url, formData);
                   }
                   case "sheets": {
