@@ -100,14 +100,16 @@ const applicationStatus = {
           try {
             if (webhookOutputs.length) {
               firstWebhook = webhookOutputs[0];
-              const { metadata } = webhookData;
+              const { metadata, fees, ...rest } = webhookData;
               formData = {
-                ...webhookData,
+                ...rest,
+                ...(!userCouldntPay && fees),
                 metadata: {
                   ...metadata,
                   paymentSkipped: userCouldntPay ?? false,
                 },
               };
+
               newReference = await webhookService.postRequest(
                 firstWebhook.outputData.url,
                 formData
