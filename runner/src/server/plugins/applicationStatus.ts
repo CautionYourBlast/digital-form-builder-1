@@ -103,7 +103,7 @@ const applicationStatus = {
               const { metadata, fees, ...rest } = webhookData;
               formData = {
                 ...rest,
-                ...(!userCouldntPay && fees),
+                ...(!userCouldntPay && { fees }),
                 metadata: {
                   ...metadata,
                   paymentSkipped: userCouldntPay ?? false,
